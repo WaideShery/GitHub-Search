@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:padding="@dimen/repository_adapter_padding"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textSize="@dimen/repository_name_text_size"
+            android:textColor="@color/repository_name_text_color"
+            android:layout_marginRight="@dimen/repository_adapter_padding"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tvStars"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:layout_marginRight="@dimen/repository_adapter_padding"
+            android:textSize="@dimen/repository_description_text_size"
+            android:maxLines="2"
+            android:lines="2"
+            android:ellipsize="end"
+            android:textColor="@color/repository_description_text_color"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tvStars"
+            app:layout_constraintTop_toBottomOf="@id/tvName"/>
+
+
+    <com.neirx.githubsearch.ui.base.custom_view.VectoredTextView
+            android:id="@+id/tvStars"
+            android:layout_width="0dp"
+            app:drawableLeftCompat="@drawable/vic_star"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:drawablePadding="1dp"
+            android:ems="6"
+            android:textSize="@dimen/repository_stars_text_size"
+            android:textColor="@color/repository_stars_text_color"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
