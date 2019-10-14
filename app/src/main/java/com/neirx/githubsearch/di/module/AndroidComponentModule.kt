@@ -12,7 +12,7 @@ import dagger.android.ContributesAndroidInjector
 abstract class AndroidComponentModule{
 
     //-------- Activity injectors BEGIN--------
-    @ContributesAndroidInjector(modules = [ViewModule::class])
+    @ContributesAndroidInjector(modules = [ViewModelModule::class])
     abstract fun contributeMainActivity() : MainActivity
     //-------- Activity injectors END--------
 

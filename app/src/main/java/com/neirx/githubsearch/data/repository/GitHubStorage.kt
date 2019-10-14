@@ -3,6 +3,7 @@ package com.neirx.githubsearch.data.repository
 import com.neirx.githubsearch.contract.repository.RepositoryStorage
 import com.neirx.githubsearch.data.net.GitHubApi
 import com.neirx.githubsearch.data.net.item.RepositoryItem
+import com.neirx.githubsearch.data.repository.base.Loadable
 import com.neirx.githubsearch.data.room.dao.SearchCacheDao
 import com.neirx.githubsearch.data.room.entity.SearchCacheEntity
 import com.neirx.githubsearch.model.Repository
@@ -21,7 +22,7 @@ class GitHubStorage(
     private var cacheTimeInMillis = timeUnit.toMillis(cacheTime)
 
 
-    override fun search(query: String): Observable<List<Repository>> {
+    override fun search(query: String): Observable<Loadable<List<Repository>>> {
         val db = Single.fromCallable {
             val time = System.currentTimeMillis() - cacheTimeInMillis
             searchCacheDao.clear(time)
@@ -38,16 +39,24 @@ class GitHubStorage(
             }
 
         return db.flatMap { t ->
-            if (t.isEmpty()) net
-            else Observable.just(t)
+            if (t.isEmpty()) {
+                Observable.merge(Observable.just(Loadable.loading()),
+                    net.map {
+                        Loadable.complete(it)
+                    })
+            } else {
+                Observable.just(Loadable.complete(t))
+            }
         }
     }
 
     private fun convert(items: List<RepositoryItem>): List<Repository> {
         val repositories: MutableList<Repository> = ArrayList(items.size)
         for (item in items) {
-            val rep = Repository(item.id, item.fullName, item.description,
-                item.stars, item.htmlUrl)
+            val rep = Repository(
+                item.id, item.fullName, item.description,
+                item.stars, item.htmlUrl
+            )
             repositories.add(rep)
         }
         return repositories
